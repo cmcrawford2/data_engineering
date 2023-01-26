@@ -1,0 +1,33 @@
+select 
+	lpep_pickup_datetime,
+	lpep_dropoff_datetime,
+	total_amount,
+	CONCAT(zpu."Borough", ' / ', zpu."Zone") as "pickup_loc",
+	CONCAT(zdo."Borough", ' / ', zdo."Zone") as "dropoff_loc"
+from
+	green_taxi_data t,
+	zones zpu,
+	zones zdo
+where
+	t."PULocationID" = zpu."LocationID" and
+	t."DOLocationID" = zdo."LocationID"
+limit 100;
+
+This is an inner join. we are selecting "from" a combination of all with all, "where" the location ids match.
+
+from
+  green_taxi_data t JOIN zones zpu
+    ON t."PULocationID" = zpu."LocationID"
+  JOIN zones zdo
+    ON t."DOLocationID" = zdo."LocationID"
+
+SELECT 
+    lpep_pickup_datetime
+FROM green_taxi_data
+WHERE trip_distance = ( SELECT MAX(trip_distance) FROM green_taxi_data );
+
+select count(passenger_count) 
+from green_taxi_data
+where passenger_count = 2 and
+lpep_pickup_datetime >= '2019-01-01 00:00:00' and
+lpep_pickup_datetime <= '2019-01-01 23:59:59';
